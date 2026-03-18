@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\LuckyNumberRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +10,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HelloController extends AbstractController
 {
+    private LuckyNumberRepository $luckyNumberRepository;
+
+    public function __construct(LuckyNumberRepository $luckyNumberRepository)
+    {
+        $this->luckyNumberRepository = $luckyNumberRepository;
+    }
+
     #[Route(path: '/hello')]
     public function hello(Request $request): Response
     {
@@ -28,6 +36,7 @@ class HelloController extends AbstractController
     public function generateLuckyNumber(): Response 
     {
         $luckyNumber = random_int(0, 100);
+        $this->luckyNumberRepository->saveLuckyNumber($luckyNumber);
         return $this->render(
             'HelloController/index.html.twig',
             [ 'luckyNumber' => $luckyNumber ]
