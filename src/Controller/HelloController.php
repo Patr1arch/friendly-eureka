@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HelloController extends AbstractController
 {
@@ -32,7 +33,8 @@ class HelloController extends AbstractController
         return new Response("Hello $name. BaseUri: $baseUri");
     }
 
-    #[Route('/hello/lucky/number')]
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/hello/lucky/number', name: "app_generate_lucky_number")]
     public function generateLuckyNumber(): Response 
     {
         $luckyNumber = random_int(0, 100);
