@@ -16,6 +16,9 @@ class LuckyNumber
     #[ORM\Column]
     private ?int $value = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $author = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class LuckyNumber
     public function setValue(int $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

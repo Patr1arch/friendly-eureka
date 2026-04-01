@@ -42,4 +42,14 @@ class HelloController extends AbstractController
             [ 'luckyNumber' => $luckyNumber ]
         );
     }
+
+    #[Route('/hello/lucky/number/odd/{maxValue}')]
+    public function getOddLuckyNumbers(int $maxValue = 50): Response
+    {
+        $luckyNumberArr = $this->luckyNumberRepository->findAllOdds($maxValue);
+        return $this->render(
+            'HelloController/list.html.twig',
+            [ 'luckyNumbers' => $luckyNumberArr ]
+        );
+    }
 }

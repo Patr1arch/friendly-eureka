@@ -26,13 +26,31 @@ class LuckyNumberRepository extends ServiceEntityRepository
         $em->flush();
     }
 
+    public function findAllOdds(int $maxValue = 50): array
+    {
+        $qb = $this->createQueryBuilder('l');
+
+        $qb->andWhere('MOD(l.value, 2) = 1', 'l.value < :maxVal');
+        $qb->setParameter('maxVal', $maxValue);
+
+        $qb->orderBy('l.value', 'DESC');
+        $qb->setMaxResults(5);
+
+
+        $query = $qb->getQuery();
+
+        $result = $query->getArrayResult();
+
+        return $result;
+    }
+
     //    /**
     //     * @return LuckyNumber[] Returns an array of LuckyNumber objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
+    //        return $this->createQueryBuilder('l') // SELECT * FROM lucky_number AS l
+    //            ->andWhere('l.exampleField = :val') 
     //            ->setParameter('val', $value)
     //            ->orderBy('l.id', 'ASC')
     //            ->setMaxResults(10)
