@@ -9,8 +9,8 @@
                 {{ user.profile.bio }}
                 <br>
                 <a href="{{ path('app_profile_edit')}}">Редактирование профиля</a>
-                <form method="post" action="{{ path('app_profile_delete') }}">
-                    <button onсlick="return confirm('Вы уверены?');">Удалить профиль</button>
+                <form method="post" action="{{ path('app_profile_delete') }}" onsubmit="return confirm('Вы уверены?');">
+                    <button>Удалить профиль</button>
                 </form> 
                 <a href="{{ path('app_post') }}">Все посты</a<
             </p>

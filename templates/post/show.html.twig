@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Пост
+{% endblock %}
+
+{% block body %}
+    <div>
+        {{ post.title }}
+    </div>
+    <div>
+        {{ post.description }}
+    </div>
+    <div>
+        <a href="{{ path('app_post_edit', { 'id': post.id } ) }}">Редактировать пост</a>
+    </div>
+    <div>
+        <form action="{{ path('app_post_delete', { 'id': post.id } ) }}" method="post" onsubmit="return confirm('Вы уверены?');">
+            <button>Удалить пост</button>
+        </form>
+    </div>
+    <div>
+        <a href="{{ path('app_post' )}}">Ко всем постам</a>
+    </div>
+{% endblock %}

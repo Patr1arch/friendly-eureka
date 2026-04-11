@@ -44,11 +44,39 @@ final class PostController extends AbstractController
             $user = $this->getUser();
             $profile = $user->getProfile();
             $post->setProfile($profile);
-            
+
             $this->postRepository->savePost($post);
-            return $this->redirectToRoute('app_post');
+            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
         }
 
         return $this->render('post/new.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/post/{id}/show', name: 'app_post_show', methods: [Request::METHOD_GET])]
+    public function showPost(Post $post): Response
+    {
+        return $this->render('post/show.html.twig', ['post' => $post]);
+    }
+
+    #[Route('/post/{id}/edit', name: 'app_post_edit', methods: [Request::METHOD_GET, Request::METHOD_POST])]
+    public function editPost(Post $post, Request $request): Response
+    {
+        $form = $this->createForm(PostType::class, $post);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
+            $this->postRepository->savePost($post);
+            return $this->redirectToRoute('app_post_show', ['id' => $post->getId()]);
+        }
+
+        return $this->render('post/edit.html.twig', ['form' => $form]);
+    }
+
+    #[Route('/post/{id}/delete', name: 'app_post_delete', methods: [Request::METHOD_POST])]
+    public function deletePost(Post $post): Response
+    {
+        $this->postRepository->deletePost($post);
+        return $this->redirectToRoute('app_post');
     }
 }
