@@ -16,6 +16,22 @@ class ProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, Profile::class);
     }
 
+    /**
+     * Получить топ-5 профилей, чьи посты имеют максимальное суммарное количество комментариев
+     */
+    public function getTopProfilesWithTotalCommentInTheirPosts(int $topMax = 5)
+    {
+        // TODO: Реализовтать метод
+    }
+
+    /** 
+     * Получить профили, которые не оставили ни одного комментария, но имют хотя бы один пост
+     */
+    public function getProfilesWithPostsAndWithoudComments()
+    {
+        // TODO: Реализовать метод
+    }
+
     //    /**
     //     * @return Profile[] Returns an array of Profile objects
     //     */

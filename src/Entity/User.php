@@ -64,6 +64,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * TODO: Изменить этот метод, чтобы возвращал коллекцию ролей из таблицы ролей
+     * ПОДСКАЗКА: нужно создать таблицу ROLE и связать ее с User с помощью связи Многие-Ко-Многим
      */
     public function getRoles(): array
     {

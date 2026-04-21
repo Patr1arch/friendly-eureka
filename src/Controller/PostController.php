@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,10 +54,13 @@ final class PostController extends AbstractController
         return $this->render('post/new.html.twig', ['form' => $form]);
     }
 
-    #[Route('/post/{id}/show', name: 'app_post_show', methods: [Request::METHOD_GET])]
+    #[Route('/post/{id}/show', name: 'app_post_show', methods: [Request::METHOD_GET, ])]
     public function showPost(Post $post): Response
     {
-        return $this->render('post/show.html.twig', ['post' => $post]);
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment, ['action' => $this->generateUrl('app_comment_new', ['post_id' => $post->getId()])] );
+
+        return $this->render('post/show.html.twig', ['post' => $post, 'form' => $commentForm]);
     }
 
     #[Route('/post/{id}/edit', name: 'app_post_edit', methods: [Request::METHOD_GET, Request::METHOD_POST])]
