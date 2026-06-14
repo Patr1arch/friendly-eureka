@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Message\SendEmailMessage;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -15,7 +17,8 @@ final class RegistrationController extends AbstractController
 {
     public function __construct(
         private UserPasswordHasherInterface $hasher,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private MessageBusInterface $bus,
     ){
     }
 
@@ -35,6 +38,9 @@ final class RegistrationController extends AbstractController
 
             $hashedPassword = $this->hasher->hashPassword($user, $plainPassword);
             $this->userRepository->upgradePassword($user, $hashedPassword);
+
+            $sendEmailMessage = new SendEmailMessage($user->getId(), "You have registered!");
+            $this->bus->dispatch($sendEmailMessage);
 
             return $this->redirectToRoute('app_login');
         }
